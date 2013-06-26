@@ -286,24 +286,22 @@ static int initShaders(void)
 
 static void initGLES2(void)
 {
-	int i,j;
-
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glGenTextures(1, &textureId);
 	glBindTexture(GL_TEXTURE_2D, textureId);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+}
+
+static void update_texture(int val)
+{
+	GLuint * buffer = (GLuint *) bitmap;
+	int i,j;
 
 	for (i = 0; i < TH; i++) {
 		for (j = 0; j < TW; j++) {
-#if 0
-			GLuint col = (255L<<24) + ((255L-j*2)<<16) + ((255L-i)<<8) + (255L-i*2);
-			if ( ((i*j)/8) % 2 )
-				col = (GLuint) (255L<<24) + (255L<<16) + (0L<<8) + (255L);
-#else
-			GLuint col = 0x00ffff00 * (i%2) * (j%2);
-#endif
-			bitmap[j][i] = col;
+			GLuint col = (val % 250) << 8;
+			*(buffer + j + i*TW) = col;
 		}
 	}
 
@@ -400,7 +398,8 @@ int main(int argc, char *argv[])
 
     while(iterations-- >= 0)
     {
-        draw();
+		update_texture(iterations);
+		draw();
     }
 
     eglClose();
