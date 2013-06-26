@@ -146,3 +146,9 @@ EGLNativeWindowType plat_get_window(void)
 {
 	return (EGLNativeWindowType) xWindow;
 }
+
+void plat_get_geometry(int *pw, int *ph)
+{
+	*pw = WIDTH;
+	*ph = HEIGHT;
+}

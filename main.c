@@ -14,13 +14,10 @@
 
 /* */
 
-#define WIDTH  640
-#define HEIGHT 480
-
-/* */
-
-EGLNativeDisplayType nativeDisplay;
-EGLNativeWindowType  nativeWindow;
+static EGLNativeDisplayType nativeDisplay;
+static EGLNativeWindowType  nativeWindow;
+static int width;
+static int height;
 
 static EGLDisplay eglDisplay = EGL_NO_DISPLAY;
 static EGLContext eglContext = EGL_NO_CONTEXT;
@@ -333,7 +330,7 @@ static void draw(void)
 
 	GLushort indices[] = { 0, 1, 2, 0, 2, 3 };
 
-    glViewport(0, 0, WIDTH, HEIGHT);
+    glViewport(0, 0, width, height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glUseProgram(ShaderProgs);
@@ -388,7 +385,9 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    if (0 > eglOpen()) {
+	plat_get_geometry(&width, &height);
+
+	if (0 > eglOpen()) {
         printf("error in eglOpen\n");
         return -1;
     }
