@@ -40,14 +40,12 @@ static GLuint load_shader(const char *shaderSrc, GLenum type)
     glCompileShader(shader);
     glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
 
-    if (!compiled)
-    {
-        GLint infoLen=0;
+    if (!compiled) {
+        GLint infoLen = 0;
 
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLen);
 
-        if (infoLen>0)
-        {
+        if (infoLen > 0) {
             char *infoLog = malloc(sizeof(char) * infoLen);
 
             glGetShaderInfoLog(shader, infoLen, NULL, infoLog);
@@ -110,13 +108,11 @@ static int init_shaders(void)
     /* check status */
     glGetProgramiv(programObject, GL_LINK_STATUS, &linked);
 
-    if (!linked)
-    {
-        GLint infoLen=0;
+    if (!linked) {
+        GLint infoLen = 0;
 
         glGetShaderiv(programObject, GL_INFO_LOG_LENGTH, &infoLen);
-        if (infoLen>0)
-        {
+        if (infoLen > 0) {
             char *infoLog = malloc(sizeof(char) * infoLen);
 
             glGetShaderInfoLog(programObject, infoLen, NULL, infoLog);

@@ -96,14 +96,12 @@ static int eglOpen(void)
 #endif
 
     eglDisplay = eglGetDisplay(nativeDisplay);
-    if (!eglDisplay)
-    {
+    if (!eglDisplay) {
         printf("eglGetDisplay error\n");
         return -1;
     }
 
-    if (!eglInitialize(eglDisplay, &majorVersion, &minorVersion))
-    {
+    if (!eglInitialize(eglDisplay, &majorVersion, &minorVersion)) {
         printf("eglInitialize failed\n");
         return -1;
     }
@@ -116,29 +114,25 @@ static int eglOpen(void)
 
     eglBindAPI(EGL_OPENGL_ES_API);
 
-    if (!eglChooseConfig(eglDisplay, pi32ConfigAttribs, &eglConfig, 1, &numConfigs) || numConfigs != 1)
-    {
+    if (!eglChooseConfig(eglDisplay, pi32ConfigAttribs, &eglConfig, 1, &numConfigs) || numConfigs != 1) {
 		handle_egl_error("eglChooseConfig");
         return -1;
     }
 
     eglWindowSurface = eglCreateWindowSurface(eglDisplay, eglConfig, nativeWindow, NULL);
-    if (eglWindowSurface == EGL_NO_SURFACE)
-    {
+    if (eglWindowSurface == EGL_NO_SURFACE) {
         handle_egl_error("eglCreateWindowSurface");
         return -1;
     }
 
     eglContext = eglCreateContext(eglDisplay, eglConfig, NULL, gl_context_attribs);
-    if (eglContext == EGL_NO_CONTEXT)
-    {
+    if (eglContext == EGL_NO_CONTEXT) {
         handle_egl_error("eglCreateContext");
         return -1;
     }
 
     ret = eglMakeCurrent(eglDisplay, eglWindowSurface, eglWindowSurface, eglContext);
-    if (ret == EGL_FALSE)
-    {
+    if (ret == EGL_FALSE) {
         handle_egl_error("eglMakeCurrent");
         return -1;
     }
@@ -164,39 +158,34 @@ int main(int argc, char *argv[])
     if(argc > 1)
         iterations = atoi(argv[1]);
 
-	if (0 > platform_open())
-	{
+	ret = platform_open();
+	if (0 > ret) {
 		printf("can't init platform\n");
 		return -1;
 	}
 
 	nativeDisplay = plat_get_display();
-
-    if (0 > nativeDisplay)
-    {
+    if (0 > nativeDisplay) {
         printf("can't get platform display\n");
         return -1;
     }
 
 	nativeWindow = plat_get_window();
-
-    if (0 > nativeWindow)
-    {
+    if (0 > nativeWindow) {
         printf("can't get platform window\n");
         return -1;
     }
 
 	plat_get_geometry(&width, &height);
-
-	if (0 > eglOpen()) {
+	ret = eglOpen();
+	if (0 > ret) {
         printf("error in eglOpen\n");
         return -1;
     }
 
 	gles2_init();
 
-    while(iterations-- >= 0)
-    {
+    while(iterations-- >= 0) {
 		gles2_update_state(iterations);
 		gles2_draw(width, height);
 
