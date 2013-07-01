@@ -138,8 +138,10 @@ static int init_shaders(void)
 
 /* */
 
-void gles2_update_texture(int val)
+void gles2_update_state(int val)
 {
+	/* update texture */
+
 	GLuint * buffer = (GLuint *) bitmap;
 	int i,j;
 
@@ -151,6 +153,10 @@ void gles2_update_texture(int val)
 	}
 
 	glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA, TW, TH, 0, GL_RGBA, GL_UNSIGNED_BYTE, bitmap);
+
+	/* update angle */
+
+	angle += delta;
 }
 
 void gles2_draw(int width, int height)
@@ -195,8 +201,6 @@ void gles2_draw(int width, int height)
 	glBindTexture (GL_TEXTURE_2D, textureId);
 
 	glDrawElements (GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, indices);
-
-	angle += delta;
 }
 
 void gles2_init(void)

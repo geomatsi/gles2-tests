@@ -197,7 +197,7 @@ int main(int argc, char *argv[])
 
     while(iterations-- >= 0)
     {
-		gles2_update_texture(iterations);
+		gles2_update_state(iterations);
 		gles2_draw(width, height);
 
 		eglSwapBuffers(eglDisplay, eglWindowSurface);

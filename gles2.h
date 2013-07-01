@@ -3,6 +3,6 @@
 
 void gles2_init(void);
 void gles2_draw(int width, int height);
-void gles2_update_texture(int val);
+void gles2_update_state(int val);
 
 #endif /* GLES2_UTILS_H */
